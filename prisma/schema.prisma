@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  DONE
+  NO_SHOW
+}
+
+model Branch {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  openTime  DateTime @db.Time(0)
+  closeTime DateTime @db.Time(0)
+  slotStep  Int      @default(30)
+  capacity  Int      @default(2)
+
+  bookings     Booking[]
+  bookingSlots BookingSlot[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model Service {
+  id              String  @id @default(cuid())
+  name            String  @unique
+  description     String?
+  durationMinutes Int
+  price           Int
+
+  bookings Booking[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model CustomerUser {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String   @unique @db.VarChar(20)
+  email        String?  @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([phone])
+}
+
+model Booking {
+  id           String        @id @default(cuid())
+  bookingCode  String        @unique @db.VarChar(12)
+  customerName String
+  phone        String        @db.VarChar(20)
+  vehicleType  String        @db.VarChar(40)
+  branchId     String
+  serviceId    String
+  startTime    DateTime      @db.Timestamptz(0)
+  endTime      DateTime      @db.Timestamptz(0)
+  slotDate     DateTime      @db.Date
+  laneNumber   Int
+  status       BookingStatus @default(PENDING)
+
+  branch        Branch        @relation(fields: [branchId], references: [id], onDelete: Restrict)
+  service       Service       @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  occupiedSlots BookingSlot[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([branchId, slotDate, startTime])
+  @@index([branchId, status, startTime])
+  @@index([serviceId, slotDate])
+  @@index([phone, bookingCode])
+}
+
+model BookingSlot {
+  id         String   @id @default(cuid())
+  bookingId  String
+  branchId   String
+  slotTime   DateTime @db.Timestamptz(0)
+  slotDate   DateTime @db.Date
+  laneNumber Int
+
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  branch  Branch  @relation(fields: [branchId], references: [id], onDelete: Cascade)
+
+  @@unique([branchId, slotTime, laneNumber])
+  @@unique([bookingId, slotTime])
+  @@index([branchId, slotDate, slotTime])
+  @@index([bookingId])
+}

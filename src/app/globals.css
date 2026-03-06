@@ -1,0 +1,249 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 206 52% 98%;
+    --foreground: 224 39% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 39% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 39% 13%;
+    --primary: 190 88% 36%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 205 42% 95%;
+    --secondary-foreground: 224 39% 13%;
+    --muted: 206 32% 95%;
+    --muted-foreground: 220 15% 41%;
+    --accent: 32 97% 56%;
+    --accent-foreground: 27 22% 14%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 212 32% 88%;
+    --input: 212 32% 88%;
+    --ring: 190 88% 36%;
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(44rem 22rem at -8% -14%, rgba(6, 182, 212, 0.2), transparent 64%),
+      radial-gradient(38rem 26rem at 102% 1%, rgba(251, 146, 60, 0.2), transparent 62%),
+      radial-gradient(24rem 20rem at 50% 112%, rgba(20, 184, 166, 0.16), transparent 74%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.93), rgba(247, 251, 255, 0.96));
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  .surface-grid {
+    position: relative;
+  }
+
+  .surface-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+    background-size: 42px 42px;
+    mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.5), transparent 80%);
+  }
+
+  .glass-shell {
+    position: relative;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.68);
+    background: linear-gradient(138deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.74));
+    box-shadow:
+      0 18px 36px rgba(15, 34, 62, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(10px);
+  }
+
+  .glass-shell::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    pointer-events: none;
+  }
+
+  .hero-spotlight {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-spotlight::after {
+    content: "";
+    position: absolute;
+    width: 19rem;
+    height: 19rem;
+    right: -5rem;
+    top: -8rem;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.38), transparent 70%);
+    filter: blur(8px);
+    pointer-events: none;
+  }
+
+  .neon-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(13, 148, 136, 0.24);
+    background: rgba(255, 255, 255, 0.87);
+    padding: 0.35rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: rgb(13 148 136);
+    box-shadow: 0 10px 24px rgba(13, 148, 136, 0.16);
+  }
+
+  .shine-border {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shine-border::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(120deg, rgba(34, 211, 238, 0.35), rgba(251, 146, 60, 0.24), rgba(20, 184, 166, 0.32));
+    opacity: 0.34;
+    filter: blur(18px);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .soft-dot-bg {
+    background-image: radial-gradient(rgba(8, 145, 178, 0.18) 1px, transparent 1.2px);
+    background-size: 12px 12px;
+    background-position: center;
+  }
+
+  .type-h1 {
+    @apply font-[var(--font-space-grotesk)] text-4xl font-bold leading-tight md:text-5xl lg:text-6xl;
+  }
+
+  .type-h2 {
+    @apply font-[var(--font-space-grotesk)] text-2xl font-bold leading-tight md:text-3xl;
+  }
+
+  .type-h3 {
+    @apply font-[var(--font-space-grotesk)] text-lg font-semibold leading-snug md:text-xl;
+  }
+
+  .type-body {
+    @apply text-sm leading-relaxed text-slate-600 md:text-base;
+  }
+
+  .type-small {
+    @apply text-xs leading-relaxed text-slate-500;
+  }
+
+  .section-stack {
+    @apply space-y-8 md:space-y-12;
+  }
+
+  .section-spacing {
+    @apply px-5 py-6 md:px-8 md:py-8;
+  }
+
+  .radius-rule {
+    border-radius: 1.25rem;
+  }
+
+  .shadow-rule {
+    box-shadow:
+      0 12px 32px rgba(16, 34, 63, 0.12),
+      0 2px 0 rgba(255, 255, 255, 0.6) inset;
+  }
+
+  .btn-primary-ui {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-primary font-semibold text-primary-foreground transition hover:bg-cyan-700;
+  }
+
+  .btn-secondary-ui {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white font-semibold text-slate-700 transition hover:border-primary/45 hover:text-primary;
+  }
+
+  .btn-ghost-ui {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-semibold text-slate-600 transition hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .btn-sm-ui {
+    @apply h-9 px-3 text-sm;
+  }
+
+  .btn-md-ui {
+    @apply h-10 px-4 text-sm;
+  }
+
+  .btn-lg-ui {
+    @apply h-11 px-5 text-base;
+  }
+
+  .ui-card {
+    border-radius: 1.25rem;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow:
+      0 12px 32px rgba(16, 34, 63, 0.12),
+      0 2px 0 rgba(255, 255, 255, 0.6) inset;
+  }
+
+  .ui-card-pad {
+    @apply p-5 md:p-6;
+  }
+
+  .ui-card-hover {
+    @apply transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(15,34,62,0.16)];
+  }
+
+  .rise-item {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rise-in 0.55s ease forwards;
+  }
+
+  .grid-fade > *:nth-child(1) {
+    animation-delay: 0.06s;
+  }
+  .grid-fade > *:nth-child(2) {
+    animation-delay: 0.14s;
+  }
+  .grid-fade > *:nth-child(3) {
+    animation-delay: 0.22s;
+  }
+  .grid-fade > *:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .grid-fade > *:nth-child(5) {
+    animation-delay: 0.38s;
+  }
+  .grid-fade > *:nth-child(6) {
+    animation-delay: 0.46s;
+  }
+}
+
+@keyframes rise-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
